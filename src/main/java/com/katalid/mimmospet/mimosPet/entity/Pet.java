@@ -1,6 +1,8 @@
 package com.katalid.mimmospet.mimosPet.entity;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "pet")
@@ -9,16 +11,24 @@ public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(name = "nome")
     private String nome;
+
+    @Column(name = "tipo")
     private String tipo;
+
+    @Column(name = "raca")
     private String raca;
 
-    public Pet(){}
-    public Pet(String nome, String tipo, String raca) {
+
+    public Pet(Long id, String nome, String tipo, String raca) {
+        this.id = id;
         this.nome = nome;
         this.tipo = tipo;
         this.raca = raca;
     }
+    public Pet(){}
 
     public Long getId() {
         return id;
@@ -51,4 +61,5 @@ public class Pet {
     public void setRaca(String raca) {
         this.raca = raca;
     }
+
 }
