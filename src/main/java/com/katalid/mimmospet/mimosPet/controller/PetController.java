@@ -1,16 +1,13 @@
 package com.katalid.mimmospet.mimosPet.controller;
 
 import com.katalid.mimmospet.mimosPet.entity.Pet;
-import com.katalid.mimmospet.mimosPet.entity.Usuario;
 import com.katalid.mimmospet.mimosPet.repository.PetRepository;
-import com.katalid.mimmospet.mimosPet.repository.UsuarioRepository;
+import com.katalid.mimmospet.mimosPet.repository.ClientRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/pet")
@@ -20,10 +17,11 @@ public class PetController {
     private PetRepository petRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private ClientRepository clientRepository;
 
-    @PostMapping(path = "/cadastrar")
-    public ResponseEntity criarPet(@RequestBody Pet pet){
+    @ApiOperation(value = "Register a Pet")
+    @PostMapping(path = "/register")
+    public ResponseEntity regiterAPet(@RequestBody Pet pet){
 
         petRepository.save(pet);
 
@@ -32,14 +30,15 @@ public class PetController {
                 .body("");
     }
 
+    @ApiOperation(value = "Updates a Pet")
     @PutMapping(path = "/update/{id}")
     public ResponseEntity update(@PathVariable(name ="id")Long id) throws Exception{
 
         Pet petdb = petRepository.findById(id)
-                .orElseThrow(() -> new Exception("Pet didn't found"));
+                .orElseThrow(() -> new Exception("Pet not found"));
         petdb.setNome(petdb.getNome());
-        petdb.setRaca(petdb.getRaca());
-        petdb.setTipo(petdb.getTipo());
+        petdb.setBreed(petdb.getBreed());
+        petdb.setType(petdb.getType());
 
         petRepository.save(petdb);
 
@@ -47,29 +46,32 @@ public class PetController {
                 .ok()
                 .body("");
     }
+    @ApiOperation(value = "Finds a Pet by Id")
     @GetMapping(path = "/{id}")
-    public ResponseEntity buscarPet(@PathVariable(name = "id")Long id) throws Exception{
+    public ResponseEntity findAPet(@PathVariable(name = "id")Long id) throws Exception{
         Pet petdb = petRepository
                 .findById(id)
-                .orElseThrow(()-> new Exception("pet não encontrado"));
+                .orElseThrow(()-> new Exception("Pet not found"));
 
         return ResponseEntity
                 .ok()
                 .body(petdb);
     }
+    @ApiOperation(value = "List all Pets")
     @GetMapping(path = "/")
-    public ResponseEntity listarPets(){
+    public ResponseEntity listOfPets(){
 
         return ResponseEntity
                 .ok()
                 .body(petRepository.findAll());
     }
 
+    @ApiOperation(value = "Delete a pet by Id")
     @DeleteMapping(path = "/deletar/{id}")
-    public ResponseEntity deletar(@PathVariable(name = "id")Long id) throws Exception {
+    public ResponseEntity deleteAPet(@PathVariable(name = "id")Long id) throws Exception {
 
         Pet pet = petRepository.findById(id)
-                .orElseThrow(() -> new Exception("Pet não encontrado"));
+                .orElseThrow(() -> new Exception("Pet not found"));
         petRepository.delete(pet);
 
         return ResponseEntity
@@ -77,8 +79,9 @@ public class PetController {
                 .body("");
     }
 
+    @ApiOperation(value = "Delete all Pets")
     @DeleteMapping(path = "/deletartodos")
-    public ResponseEntity deletarTodos(@PathVariable(name = "id") Long id){
+    public ResponseEntity deleteAllPets(@PathVariable(name = "id") Long id){
         petRepository.deleteAll();
 
         return ResponseEntity

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "API Rest User")
 @RestController
 @RequestMapping("/v1/user")
-public class UsuarioController {
+public class ClientController {
 
     @Autowired
     private ClientRepository clientRepository;

@@ -29,7 +29,7 @@ public class SwaggerConfig {
     private ApiInfo getApiInfo(){
         return new ApiInfoBuilder()
                 .title("MimosPet API")
-                .description("Esta API criada para Gerenciamento de Pets e Tutores")
+                .description("This API was created to manage the Guardians and their pets")
                 .contact(new Contact("Katalid","www.katalid.com",""))
                 .version("1.0.0")
                 .build();

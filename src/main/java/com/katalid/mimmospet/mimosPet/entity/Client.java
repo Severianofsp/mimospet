@@ -1,5 +1,9 @@
 package com.katalid.mimmospet.mimosPet.entity;
 
+import io.swagger.annotations.ApiModelProperty;
+import org.aspectj.bridge.IMessage;
+import org.springframework.lang.NonNull;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,28 +12,31 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "tutor")
-public class Usuario implements Serializable {
+@Table(name = "guardian")
+public class Client implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
+    @ApiModelProperty(value = "Identifies the name of the guardian")
     private Long id;
 
-    @Column(name = "nome")
+    @Column(name = "name")
+    @ApiModelProperty(value = "Guardian's name", example = "Roberto")
     private String nome;
 
     @OneToMany
-    @JoinColumn(name = "pet")
-    private Set<Pet> pet;
+    @ApiModelProperty(value ="The pet's guadian")
+    @JoinColumn(name = "pet_fk")
+    private List<Pet> pet;
 
-    public Usuario(Long id, String nome, Set<Pet> pet) {
+    public Client(Long id, String nome, List<Pet> pet) {
         this.id = id;
         this.nome = nome;
         this.pet = pet;
     }
 
-    Usuario(){}
+    Client(){}
 
     public Long getId() {
         return id;
@@ -47,12 +54,12 @@ public class Usuario implements Serializable {
         this.nome = nome;
     }
 
-    public Set<Pet> getPet() {
+    public List<Pet> getPet() {
 
         return pet;
     }
 
-    public void setPet(Set<Pet> pet) {
+    public void setPet(List<Pet> pet) {
         this.pet = pet;
     }
 }
